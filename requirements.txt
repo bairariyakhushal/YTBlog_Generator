@@ -1,0 +1,9 @@
+crewai
+crewai_tools
+python-dotenv
+streamlit 
+scrapetube
+youtube-transcript-api
+yt-dlp
+fastembed
+litellm
