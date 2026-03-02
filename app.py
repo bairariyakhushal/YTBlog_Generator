@@ -9,7 +9,7 @@ load_dotenv()
 
 st.title("YouTube Video Blog Generator")
 
-channel=st.text_input("Enter YouTube Channel Handle (example: @krishnaik06)")
+channel=st.text_input("Enter YouTube Channel Handle")
 topic=st.text_input("Enter Topic")
 
 if st.button("Generate Blog"):
