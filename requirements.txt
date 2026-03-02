@@ -10,3 +10,4 @@ youtube-transcript-api
 yt-dlp
 fastembed
 litellm
+fastapi

@@ -61,13 +61,16 @@ class YoutubeChannelSearchTool(BaseTool):
                 except Exception:
                     continue
             if fallback:
-                return "\n\n---\n\n".join(fallback)
+                output = "\n\n---\n\n".join(fallback)
+                return output[:3000]
             return f"No transcript content found in channel @{handle}"
 
         # Sort by relevance score (highest first) and return top results
         scored_results.sort(key=lambda x: x[0], reverse=True)
-        results = [f"**{title}**\n{text[:1500]}" for score, title, text in scored_results[:5]]
-        return "\n\n---\n\n".join(results)
+        results = [f"**{title}**\n{text[:800]}" for score, title, text in scored_results[:3]]
+        output = "\n\n---\n\n".join(results)
+        # Truncate total output to avoid overwhelming the LLM during tool-use
+        return output[:3000]
 
 
 def create_yt_tool(channel_handle: str) -> YoutubeChannelSearchTool:

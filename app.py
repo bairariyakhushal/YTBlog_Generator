@@ -7,6 +7,10 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
+# Disable CrewAI telemetry to avoid signal-handler errors on Streamlit Cloud
+os.environ["CREWAI_TELEMETRY_OPT_OUT"] = "true"
+os.environ["OTEL_SDK_DISABLED"] = "true"
+
 st.title("YouTube Video Blog Generator")
 
 channel=st.text_input("Enter YouTube Channel Handle")
@@ -34,18 +38,22 @@ if st.button("Generate Blog"):
             verbose=True
         )
         
-        result=crew.kickoff(inputs={'topic':topic})
-        
-        blog_text = str(result)
-        
-        st.success("Blog Generated")
-        st.markdown(blog_text)
-        
-        st.download_button(
-            "Download Blog",
-            blog_text,
-            file_name="blog.md"
-        )
+        try:
+            with st.spinner("Generating blog... this may take a minute."):
+                result=crew.kickoff(inputs={'topic':topic})
+            
+            blog_text = str(result)
+            
+            st.success("Blog Generated")
+            st.markdown(blog_text)
+            
+            st.download_button(
+                "Download Blog",
+                blog_text,
+                file_name="blog.md"
+            )
+        except Exception as e:
+            st.error(f"An error occurred: {e}")
     
     else :
         st.warning("Please enter both channel and topic")
